@@ -3,48 +3,40 @@
 }
 <head>
     <link rel="stylesheet" href="~/css/Login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/util.css" asp-append-version="true" />
+    <script src="~/js/login.js"></script>
 </head>
 
-<div class="form-body">
-    <div class="row">
-        <div class="form-holder">
-            <div class="form-content">
-                <div class="form-items">
-                    <h3>Cadastro</h3>
-                    <p>Preencha os dados abaixo.</p>
-                    <form class="requires-validation" novalidate>
-
-                        <div class="col-md-12">
-                            <input class="form-control" type="text" name="name" placeholder="Nome completo" required>
-                            <div class="valid-feedback">Username field is valid!</div>
-                            <div class="invalid-feedback">Username field cannot be blank!</div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <input class="form-control" type="email" name="email" placeholder="E-mail" required>
-                            <div class="valid-feedback">Email field is valid!</div>
-                            <div class="invalid-feedback">Email field cannot be blank!</div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <input class="form-control" type="password" name="password" placeholder="Senha" required>
-                            <div class="valid-feedback">Password field is valid!</div>
-                            <div class="invalid-feedback">Password field cannot be blank!</div>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                            <label class="form-check-label">Concordo que li todos os termos</label>
-                            <div class="invalid-feedback">Por favor confirme que leu os termos!</div>
-                        </div>
-
-
-                        <div class="form-button mt-3">
-                            <button id="submit" type="submit" class="btn btn-primary">Confirmar</button>
-                        </div>
-                    </form>
-                </div>
+<div class="container-login100">
+    <div class="wrap-login100 p-l-50 p-r-50 p-t-77 p-b-30">
+        <form class="login100-form validate-form">
+            <span class="login100-form-title p-b-55">
+                Login
+            </span>
+            <div class="wrap-input100 validate-input m-b-16" data-validate="Informe um e-mail válido ex: abc@gmail.com">
+                <input class="input100" type="text" name="email" placeholder="Email">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                    <span class="lnr lnr-envelope"></span>
+                </span>
             </div>
-        </div>
+            <div class="wrap-input100 validate-input m-b-16" data-validate="Informe uma senha">
+                <input class="input100" type="password" name="pass" placeholder="Password">
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                    <span class="lnr lnr-lock"></span>
+                </span>
+            </div>
+            <button type="button" class="btn btn-primary" style="margin-bottom:2%;">Login</button>
+            <div class="text-center w-full m-t-5">
+                <span class="txt1">
+                    Não tem conta?
+                </span>
+                <a href='@Url.ActionLink("Registrar","Home")'>
+                    Registre-se agora
+                </a>
+            </div>
+        </form>
     </div>
 </div>
+
