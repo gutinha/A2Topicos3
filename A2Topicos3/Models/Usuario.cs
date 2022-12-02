@@ -24,6 +24,7 @@ namespace A2Topicos3.Models
         public string? Email { get; set; }
         [Column("senha")]
         public string? Senha { get; set; }
+        [DisplayFormat(DataFormatString = "{MM/dd/yyyy}")]
         [Column("dataNascimento", TypeName = "datetime")]
         public DateTime DataNascimento { get; set; }
         [Column("rg")]

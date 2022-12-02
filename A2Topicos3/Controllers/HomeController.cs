@@ -17,6 +17,7 @@ namespace A2Topicos3.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.username = HttpContext.Session.GetString("nome_user");
             return View();
         }
 
@@ -35,18 +36,19 @@ namespace A2Topicos3.Controllers
             {
                 HttpContext.Session.SetInt32("id_user", user.Id);
                 HttpContext.Session.SetString("nome_user", user.Nome);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
             else
             {
+                ViewBag.msg = "Usuário ou senha inválidos";
                 return View();
             }
         }
-
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Index");
+            HttpContext.Session.Remove("id_user");
+            HttpContext.Session.Remove("nome_user");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Privacy()

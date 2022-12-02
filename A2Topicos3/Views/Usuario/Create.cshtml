@@ -1,0 +1,90 @@
+﻿@model A2Topicos3.Models.Usuario
+
+@{
+    ViewData["Title"] = "Registre-se";
+}
+@section js{
+    <script type="text/javascript">
+        var textcnpj = document.getElementById("cnpj");
+        var textcpf = document.getElementById("cpf");
+        var textrg = document.getElementById("rg");
+        function esconde() {
+            if (document.getElementById("pf").checked == true) {
+                textcnpj.style.display = "none";
+                textrg.style.display = "block";
+                textcpf.style.display = "block";
+            } else {
+                textcnpj.style.display = "block";
+                textcpf.style.display = "none";
+                textrg.style.display = "none";
+            }
+        }
+    </script>
+}
+
+<h1>Registre-se</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="button" id="pf" onclick="esconde()" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Pessoa Física
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="button" id="pj" onclick="esconde()">
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Pessoa Jurídica
+                </label>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label">Nome completo</label>
+                <input asp-for="Nome" placeholder="Digite seu nome completo" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Senha" class="control-label"></label>
+                <input asp-for="Senha" class="form-control" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataNascimento" class="control-label"></label>
+                <input asp-for="DataNascimento" class="form-control" />
+                <span asp-validation-for="DataNascimento" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="rg">
+                <label asp-for="Rg" class="control-label"></label>
+                <input asp-for="Rg" class="form-control" />
+                <span asp-validation-for="Rg" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="cpf">
+                <label asp-for="Cpf" class="control-label"></label>
+                <input asp-for="Cpf" class="form-control" />
+                <span asp-validation-for="Cpf" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="cnpj" style="display:none;">
+                <label asp-for="Cnpj" class="control-label"></label>
+                <input asp-for="Cnpj" class="form-control" />
+                <span asp-validation-for="Cnpj" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="padding-top:8px">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
