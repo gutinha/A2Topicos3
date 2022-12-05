@@ -1,5 +1,6 @@
-﻿@{
-    var user = Context.Session.GetString("nome_user");
+﻿@using Newtonsoft.Json;
+@{
+    var str = Context.Session.GetString("user");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -29,10 +30,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (user != null)
+                        @if (str != null)
                         {
+                            var a = JsonConvert.DeserializeObject<Usuario>(str);
                             <li class="nav-item">
-                                <p class="text-white">Olá, @user</p>
+                                <p class="text-white" style="display:block;">Olá, @a.Nome</p>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Logout">Sair</a>
@@ -64,6 +66,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("js", false)
+    @await Component.InvokeAsync("Notyf")
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
