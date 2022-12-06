@@ -1,0 +1,76 @@
+﻿@model IEnumerable<A2Topicos3.Models.Carro>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Cadastrar Carro</a>
+</p>
+<table class="table table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Modelo)
+            </th>
+            <th>
+                Ano do modelo
+            </th>
+            <th>
+                Ano de fabricação
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cavalos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LitrosMotor)
+            </th>
+            <th>
+                Quant de portas
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Marca)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnoModelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnoFabricacao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cavalos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LitrosMotor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuantPortas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Marca.Nome)
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

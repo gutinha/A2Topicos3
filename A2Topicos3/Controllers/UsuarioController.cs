@@ -23,7 +23,7 @@ namespace A2Topicos3.Controllers
         // GET: Usuario
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Usuarios.ToListAsync());
+            return View(await _context.Usuarios.Where(x=> x.Ativo == true && x.Permissos.Any(y=> y.Permissao=="Admin")).ToListAsync());
         }
 
         // GET: Usuario/Details/5
@@ -68,7 +68,33 @@ namespace A2Topicos3.Controllers
                 return RedirectToAction("Index", "Home");
             }
             _notifyService.Error("Erro ao criar usuário");
-            return View(usuario);
+            return RedirectToAction("Index", "Home"); ;
+        }
+
+        public IActionResult CreateAdmin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAdmin([Bind("Nome,Email,Senha,DataNascimento,Rg,Cpf,Cnpj")] Usuario usuario)
+        {
+            if (ModelState.IsValid)
+            {
+                usuario.Ativo = true;
+                usuario.Senha = Util.hash(usuario.Email + usuario.Senha);
+                usuario.Permissos = new List<Permisso>
+                {
+                    new Permisso() { IdUsuario = usuario.Id, Permissao = "Admin" }
+                };
+                _context.Add(usuario);
+                await _context.SaveChangesAsync();
+                _notifyService.Success("Cadastrado com sucesso!");
+                return RedirectToAction("Index", "Home");
+            }
+            _notifyService.Error("Erro ao criar usuário");
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Usuario/Edit/5
@@ -152,11 +178,22 @@ namespace A2Topicos3.Controllers
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario != null)
             {
-                _context.Usuarios.Remove(usuario);
+                var str = HttpContext.Session.GetString("user");
+                var usu = JsonConvert.DeserializeObject<Usuario>(str);
+                if (usu.Id == usuario.Id)
+                {
+                    _notifyService.Error("Não é possível excluir o usuário logado");
+                    return RedirectToAction("Index", "Usuario");
+                }
+                else
+                {
+                    usuario.Ativo = false;
+                }
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            _notifyService.Success("Usuário deletado com sucesso");
+            return RedirectToAction("Index", "Usuario");
         }
 
         private bool UsuarioExists(int id)

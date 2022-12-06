@@ -12,6 +12,7 @@ namespace A2Topicos3.Models
         public Usuario()
         {
             Enderecos = new HashSet<Endereco>();
+            Permissos = new HashSet<Permisso>();
             Revisaos = new HashSet<Revisao>();
         }
 
@@ -24,7 +25,6 @@ namespace A2Topicos3.Models
         public string? Email { get; set; }
         [Column("senha")]
         public string? Senha { get; set; }
-        [DisplayFormat(DataFormatString = "{MM/dd/yyyy}")]
         [Column("dataNascimento", TypeName = "datetime")]
         public DateTime DataNascimento { get; set; }
         [Column("rg")]
@@ -35,8 +35,11 @@ namespace A2Topicos3.Models
         public string? Cnpj { get; set; }
         [Column("ativo")]
         public bool Ativo { get; set; }
+
         [InverseProperty("Usuario")]
         public virtual ICollection<Endereco> Enderecos { get; set; }
+        [InverseProperty("IdUsuarioNavigation")]
+        public virtual ICollection<Permisso> Permissos { get; set; }
         [InverseProperty("Usuario")]
         public virtual ICollection<Revisao> Revisaos { get; set; }
     }

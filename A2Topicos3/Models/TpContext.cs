@@ -20,7 +20,7 @@ namespace A2Topicos3.Models
         public virtual DbSet<Endereco> Enderecos { get; set; } = null!;
         public virtual DbSet<Log> Logs { get; set; } = null!;
         public virtual DbSet<Marca> Marcas { get; set; } = null!;
-        public virtual DbSet<Permissoes> Permissoes { get; set; } = null!;
+        public virtual DbSet<Permisso> Permissoes { get; set; } = null!;
         public virtual DbSet<Revisao> Revisaos { get; set; } = null!;
         public virtual DbSet<Usuario> Usuarios { get; set; } = null!;
 
@@ -28,7 +28,8 @@ namespace A2Topicos3.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=127.0.0.1;Database=Topicos3;user id=sa;password=guta1299!;encrypt=false");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=127.0.0.1;Initial Catalog=Topicos3;Persist Security Info=True;User ID=sa;Password=guta1299!");
             }
         }
 
@@ -50,10 +51,10 @@ namespace A2Topicos3.Models
                     .HasConstraintName("FK_dbo.Endereco_dbo.Usuario_Usuario_id");
             });
 
-            modelBuilder.Entity<Permissoes>(entity =>
+            modelBuilder.Entity<Permisso>(entity =>
             {
                 entity.HasOne(d => d.IdUsuarioNavigation)
-                    .WithMany()
+                    .WithMany(p => p.Permissos)
                     .HasForeignKey(d => d.IdUsuario)
                     .HasConstraintName("Permissoes_FK");
             });
@@ -72,6 +73,7 @@ namespace A2Topicos3.Models
                     .HasForeignKey(d => d.UsuarioId)
                     .HasConstraintName("FK_dbo.Revisao_dbo.Usuario_usuario_id1");
             });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
