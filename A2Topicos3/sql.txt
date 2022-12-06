@@ -1,0 +1,156 @@
+-- DROP SCHEMA dbo;
+
+CREATE SCHEMA dbo;
+-- Topicos3.dbo.Log definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.Log;
+
+CREATE TABLE Topicos3.dbo.Log (
+	id int IDENTITY(1,1) NOT NULL,
+	logDateTime datetime NOT NULL,
+	texto nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK_Log PRIMARY KEY (id)
+);
+
+
+-- Topicos3.dbo.Marca definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.Marca;
+
+CREATE TABLE Topicos3.dbo.Marca (
+	id int IDENTITY(1,1) NOT NULL,
+	nome nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	descricao nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	imagem nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK_Marca PRIMARY KEY (id)
+);
+
+
+-- Topicos3.dbo.Usuario definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.Usuario;
+
+CREATE TABLE Topicos3.dbo.Usuario (
+	id int IDENTITY(1,1) NOT NULL,
+	nome nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	email nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	senha nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	dataNascimento datetime NOT NULL,
+	rg nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	cpf nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	cnpj nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	ativo bit NOT NULL,
+	CONSTRAINT PK_Usuario PRIMARY KEY (id)
+);
+
+
+-- Topicos3.dbo.[__EFMigrationsHistory] definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.[__EFMigrationsHistory];
+
+CREATE TABLE Topicos3.dbo.[__EFMigrationsHistory] (
+	MigrationId nvarchar(150) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	ProductVersion nvarchar(32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	CONSTRAINT PK___EFMigrationsHistory PRIMARY KEY (MigrationId)
+);
+
+
+-- Topicos3.dbo.Carro definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.Carro;
+
+CREATE TABLE Topicos3.dbo.Carro (
+	id int IDENTITY(1,1) NOT NULL,
+	nome nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	modelo nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	anoModelo datetime NOT NULL,
+	anoFabricacao datetime NOT NULL,
+	cavalos int NOT NULL,
+	litrosMotor int NOT NULL,
+	quantPortas int NOT NULL,
+	status int NULL,
+	marca_id int NULL,
+	imagem nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK_Carro PRIMARY KEY (id),
+	CONSTRAINT [FK_dbo.Carro_dbo.Marca_marca_id1] FOREIGN KEY (marca_id) REFERENCES Topicos3.dbo.Marca(id)
+);
+ CREATE NONCLUSTERED INDEX IX_marca_id ON dbo.Carro (  marca_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+
+
+-- Topicos3.dbo.Endereco definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.Endereco;
+
+CREATE TABLE Topicos3.dbo.Endereco (
+	id int IDENTITY(1,1) NOT NULL,
+	endereco nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	numero int NOT NULL,
+	complemento nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	bairro nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	cidade nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	estado nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	cep nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	Usuario_id int NULL,
+	CONSTRAINT PK_Endereco PRIMARY KEY (id),
+	CONSTRAINT [FK_dbo.Endereco_dbo.Usuario_Usuario_id] FOREIGN KEY (Usuario_id) REFERENCES Topicos3.dbo.Usuario(id)
+);
+ CREATE NONCLUSTERED INDEX IX_Usuario_id ON dbo.Endereco (  Usuario_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+
+
+-- Topicos3.dbo.Permissoes definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.Permissoes;
+
+CREATE TABLE Topicos3.dbo.Permissoes (
+	permissao varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	id_usuario int NULL,
+	Id int IDENTITY(0,1) NOT NULL,
+	CONSTRAINT Permissoes_PK PRIMARY KEY (Id),
+	CONSTRAINT Permissoes_FK FOREIGN KEY (id_usuario) REFERENCES Topicos3.dbo.Usuario(id)
+);
+ CREATE NONCLUSTERED INDEX IX_Permissoes_id_usuario ON dbo.Permissoes (  id_usuario ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+
+
+-- Topicos3.dbo.Revisao definition
+
+-- Drop table
+
+-- DROP TABLE Topicos3.dbo.Revisao;
+
+CREATE TABLE Topicos3.dbo.Revisao (
+	id int IDENTITY(1,1) NOT NULL,
+	descricao nvarchar(MAX) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	dataRevisao datetime NOT NULL,
+	carro_id int NULL,
+	usuario_id int NULL,
+	status nvarchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS DEFAULT 'Agendada' NOT NULL,
+	CONSTRAINT PK_Revisao PRIMARY KEY (id),
+	CONSTRAINT [FK_dbo.Revisao_dbo.Carro_carro_id] FOREIGN KEY (carro_id) REFERENCES Topicos3.dbo.Carro(id),
+	CONSTRAINT [FK_dbo.Revisao_dbo.Usuario_usuario_id1] FOREIGN KEY (usuario_id) REFERENCES Topicos3.dbo.Usuario(id)
+);
+ CREATE NONCLUSTERED INDEX IX_carro_id ON dbo.Revisao (  carro_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
+ CREATE NONCLUSTERED INDEX IX_usuario_id ON dbo.Revisao (  usuario_id ASC  )  
+	 WITH (  PAD_INDEX = OFF ,FILLFACTOR = 100  ,SORT_IN_TEMPDB = OFF , IGNORE_DUP_KEY = OFF , STATISTICS_NORECOMPUTE = OFF , ONLINE = OFF , ALLOW_ROW_LOCKS = ON , ALLOW_PAGE_LOCKS = ON  )
+	 ON [PRIMARY ] ;
