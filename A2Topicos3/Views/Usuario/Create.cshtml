@@ -19,6 +19,10 @@
                 textrg.style.display = "none";
             }
         }
+
+        $('.cpf').mask('000.000.000-00');
+        $('.rg').mask('0.000.000');
+        $('.cnpj').mask('99.999.999/9999-99');
     </script>
 }
 
@@ -53,27 +57,27 @@
             </div>
             <div class="form-group">
                 <label asp-for="Senha" class="control-label"></label>
-                <input asp-for="Senha" class="form-control" />
+                <input asp-for="Senha" type="password" class="form-control" />
                 <span asp-validation-for="Senha" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DataNascimento" class="control-label"></label>
-                <input asp-for="DataNascimento" class="form-control" />
+                    <input asp-format="{0:dd/MM/yyyy}" type="date"  asp-for="DataNascimento" class="form-control" />
                 <span asp-validation-for="DataNascimento" class="text-danger"></span>
             </div>
             <div class="form-group" id="rg">
                 <label asp-for="Rg" class="control-label"></label>
-                <input asp-for="Rg" class="form-control" />
+                <input asp-for="Rg" class="form-control rg" />
                 <span asp-validation-for="Rg" class="text-danger"></span>
             </div>
             <div class="form-group" id="cpf">
                 <label asp-for="Cpf" class="control-label"></label>
-                <input asp-for="Cpf" class="form-control" />
+                <input asp-for="Cpf" class="form-control cpf" />
                 <span asp-validation-for="Cpf" class="text-danger"></span>
             </div>
             <div class="form-group" id="cnpj" style="display:none;">
                 <label asp-for="Cnpj" class="control-label"></label>
-                <input asp-for="Cnpj" class="form-control" />
+                <input asp-for="Cnpj" class="form-control cnpj" />
                 <span asp-validation-for="Cnpj" class="text-danger"></span>
             </div>
             <div class="form-group" style="padding-top:8px">

@@ -39,7 +39,10 @@ namespace A2Topicos3.Controllers
             var user = db.Usuarios.Where(u => u.Email == email && u.Senha == Util.hash(email + senha) && u.Ativo == true).FirstOrDefault();
             if (user != null)
             {
-                HttpContext.Session.SetString("user", JsonConvert.SerializeObject(user));
+                HttpContext.Session.SetString("user", JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
                 _notifyService.Success("Login realizado com sucesso!");
                 return RedirectToAction("Index", "Home");
             }
@@ -52,7 +55,6 @@ namespace A2Topicos3.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("user");
-            HttpContext.Session.Remove("perm");
             return RedirectToAction("Index", "Home");
         }
 

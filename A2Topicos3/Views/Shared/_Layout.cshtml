@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/A2Topicos3.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+
 </head>
 <body>
     <header>
@@ -27,14 +28,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         @if (str != null)
                         {
                             var a = JsonConvert.DeserializeObject<Usuario>(str);
                             <li class="nav-item">
-                                <p class="text-white" style="display:block;">Olá, @a.Nome</p>
+                                <span class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Olá, @a.Nome</span>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Logout">Sair</a>
@@ -59,10 +57,11 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - Universal Car
+            &copy; @DateTime.Now.Year - Universal Car - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.mask.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("js", false)

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<A2Topicos3.Models.Revisao>
+
+@{
+    ViewData["Title"] = "Gerenciar revisões";
+}
+
+<h1 style="margin-bottom:10px;">
+    Gerenciar revisões
+</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                Data agendada
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Carro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataRevisao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Carro.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.Nome)
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Editar status</a> |
+                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">Detalhes</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

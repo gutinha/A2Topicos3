@@ -23,12 +23,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="AnoModelo" class="control-label">Ano do modelo</label>
-                <input asp-for="AnoModelo" class="form-control" />
+                <input asp-for="AnoModelo" type="date" class="form-control" />
                 <span asp-validation-for="AnoModelo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AnoFabricacao" class="control-label">Ano de fabricação</label>
-                <input asp-for="AnoFabricacao" class="form-control" />
+                <input asp-for="AnoFabricacao" type="date" class="form-control" />
                 <span asp-validation-for="AnoFabricacao" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -47,19 +47,16 @@
                 <span asp-validation-for="QuantPortas" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MarcaId" class="control-label"></label>
+                <label asp-for="MarcaId" class="control-label">Marca</label>
                 <select asp-for="MarcaId" class="form-control" asp-items="ViewBag.MarcaId"></select>
                 <span asp-validation-for="MarcaId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top:10px">
                 <input type="submit" value="Salvar" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-action="Index">Voltar</a>
             </div>
         </form>
     </div>
-</div>
-
-<div style="margin-top:20px;">
-    <a class="btn btn-primary" asp-action="Index">Voltar</a>
 </div>
 
 @section Scripts {

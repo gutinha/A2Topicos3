@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 namespace A2Topicos3.Models
 {
     [Table("Endereco")]
-    [Index("UsuarioId", Name = "IX_Usuario_id")]
     public partial class Endereco
     {
         [Key]

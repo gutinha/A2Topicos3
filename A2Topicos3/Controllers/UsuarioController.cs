@@ -23,7 +23,7 @@ namespace A2Topicos3.Controllers
         // GET: Usuario
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.Where(x=> x.Ativo == true && x.Permissos.Any(y=> y.Permissao=="Admin")).ToListAsync());
+            return View(await _context.Usuarios.ToListAsync());
         }
 
         // GET: Usuario/Details/5
@@ -59,13 +59,29 @@ namespace A2Topicos3.Controllers
         {
             if (ModelState.IsValid)
             {
-                usuario.Ativo = true;
-                usuario.Senha = Util.hash(usuario.Email + usuario.Senha);
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                var user = _context.Usuarios.Where(x => x.Email == usuario.Email).FirstOrDefault();
-                HttpContext.Session.SetString("user", JsonConvert.SerializeObject(user));
-                return RedirectToAction("Index", "Home");
+                var valid = _context.Usuarios.Where(x => x.Email == usuario.Email).FirstOrDefault();
+                if (valid.Id != 0 || valid.Id != null)
+                {
+                        _notifyService.Warning("Email já cadastrado");
+                        return RedirectToAction("Login", "Home");
+                }
+                else
+                {
+                    usuario.Ativo = true;
+                    usuario.Senha = Util.hash(usuario.Email + usuario.Senha);
+                    usuario.Permissos = new List<Permisso>
+                    {
+                    new Permisso() { IdUsuario = usuario.Id, Permissao = "User" }
+                    };
+                    _context.Add(usuario);
+                    await _context.SaveChangesAsync();
+                    var user = _context.Usuarios.Where(x => x.Email == usuario.Email).FirstOrDefault();
+                    HttpContext.Session.SetString("user", JsonConvert.SerializeObject(user, Formatting.Indented, new JsonSerializerSettings
+                    {
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                    }));
+                    return RedirectToAction("Index", "Home");
+                }
             }
             _notifyService.Error("Erro ao criar usuário");
             return RedirectToAction("Index", "Home"); ;
@@ -82,16 +98,35 @@ namespace A2Topicos3.Controllers
         {
             if (ModelState.IsValid)
             {
-                usuario.Ativo = true;
-                usuario.Senha = Util.hash(usuario.Email + usuario.Senha);
-                usuario.Permissos = new List<Permisso>
+                var valid = _context.Usuarios.Where(x => x.Email == usuario.Email).FirstOrDefault();
+                if (valid.Id != 0 || valid.Id != null)
                 {
+                    if(valid.Ativo == false)
+                    {
+                        valid.Ativo = true;
+                    }
+                    valid.Permissos = new List<Permisso>
+                    {
                     new Permisso() { IdUsuario = usuario.Id, Permissao = "Admin" }
-                };
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                _notifyService.Success("Cadastrado com sucesso!");
-                return RedirectToAction("Index", "Home");
+                    };
+                    _context.Add(valid).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    _notifyService.Success("Usuário criado com sucesso");
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    usuario.Ativo = true;
+                    usuario.Senha = Util.hash(usuario.Email + usuario.Senha);
+                    usuario.Permissos = new List<Permisso>
+                    {
+                    new Permisso() { IdUsuario = usuario.Id, Permissao = "Admin" }
+                    };
+                    _context.Add(usuario);
+                    await _context.SaveChangesAsync();
+                    _notifyService.Success("Cadastrado com sucesso!");
+                    return RedirectToAction("Index", "Home");
+                }
             }
             _notifyService.Error("Erro ao criar usuário");
             return RedirectToAction("Index", "Home");

@@ -7,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 namespace A2Topicos3.Models
 {
     [Table("Revisao")]
-    [Index("CarroId", Name = "IX_carro_id")]
-    [Index("UsuarioId", Name = "IX_usuario_id")]
     public partial class Revisao
     {
         [Key]

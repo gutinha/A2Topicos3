@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 namespace A2Topicos3.Models
 {
     [Table("Carro")]
-    [Index("MarcaId", Name = "IX_marca_id")]
     public partial class Carro
     {
         public Carro()
@@ -33,7 +32,7 @@ namespace A2Topicos3.Models
         [Column("quantPortas")]
         public int QuantPortas { get; set; }
         [Column("status")]
-        public int Status { get; set; }
+        public int? Status { get; set; }
         [Column("marca_id")]
         public int? MarcaId { get; set; }
         [Column("imagem")]

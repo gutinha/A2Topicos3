@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace A2Topicos3.Models
 {
-    [Index("IdUsuario", Name = "IX_Permissoes_id_usuario")]
     public partial class Permisso
     {
         [Column("permissao")]
@@ -19,7 +18,7 @@ namespace A2Topicos3.Models
         public int Id { get; set; }
 
         [ForeignKey("IdUsuario")]
-        [InverseProperty("Permissos")]
+        //[InverseProperty("Permissos")]
         public virtual Usuario? IdUsuarioNavigation { get; set; }
     }
 }
