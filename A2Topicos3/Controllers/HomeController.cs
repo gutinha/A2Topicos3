@@ -36,11 +36,11 @@ namespace A2Topicos3.Controllers
         [ActionName("Login")]
         public IActionResult Login(string email, string senha)
         {
-            var user = db.Usuarios.Where(u => u.Email == email && u.Senha == Util.hash(email+senha)).FirstOrDefault();
+            var user = db.Usuarios.Where(u => u.Email == email && u.Senha == Util.hash(email + senha)).FirstOrDefault();
             if (user != null)
             {
                 var permissoes = db.Permissoes.Where(p => p.IdUsuario == user.Id).ToList();
-                HttpContext.Session.SetString("perm", JsonConvert.SerializeObject(permissoes));
+                if (permissoes != null) { HttpContext.Session.SetString("perm", JsonConvert.SerializeObject(permissoes)); };
                 HttpContext.Session.SetString("user", JsonConvert.SerializeObject(user));
                 _notifyService.Success("Login realizado com sucesso!");
                 return RedirectToAction("Index", "Home");
@@ -54,6 +54,7 @@ namespace A2Topicos3.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("user");
+            HttpContext.Session.Remove("perm");
             return RedirectToAction("Index", "Home");
         }
 

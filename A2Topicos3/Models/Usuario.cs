@@ -35,7 +35,6 @@ namespace A2Topicos3.Models
         public string? Cnpj { get; set; }
         [Column("ativo")]
         public bool Ativo { get; set; }
-
         [InverseProperty("Usuario")]
         public virtual ICollection<Endereco> Enderecos { get; set; }
         [InverseProperty("Usuario")]

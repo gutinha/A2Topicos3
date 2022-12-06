@@ -6,14 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using A2Topicos3.Models;
+using Newtonsoft.Json;
+using AspNetCoreHero.ToastNotification.Abstractions;
 
 namespace A2Topicos3.Controllers
 {
     public class UsuarioController : Controller
     {
         private TpContext _context = new TpContext();
-        public UsuarioController()
+        public INotyfService _notifyService { get; }
+        public UsuarioController(INotyfService notifyService)
         {
+            _notifyService = notifyService;
         }
 
         // GET: Usuario
@@ -57,12 +61,13 @@ namespace A2Topicos3.Controllers
             {
                 usuario.Ativo = true;
                 usuario.Senha = Util.hash(usuario.Email + usuario.Senha);
-                HttpContext.Session.SetInt32("id_user", usuario.Id);
-                HttpContext.Session.SetString("nome_user", usuario.Nome);
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
+                var user = _context.Usuarios.Where(x => x.Email == usuario.Email).FirstOrDefault();
+                HttpContext.Session.SetString("user", JsonConvert.SerializeObject(user));
                 return RedirectToAction("Index", "Home");
             }
+            _notifyService.Error("Erro ao criar usuário");
             return View(usuario);
         }
 
