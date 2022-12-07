@@ -91,8 +91,13 @@ namespace A2Topicos3.Controllers
                 var a = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("user"));
                 revisao.UsuarioId = a.Id;
                 _context.Add(revisao);
+                _context.Logs.Add(new Log
+                {
+                    LogDateTime = DateTime.Now,
+                    Texto = "Usuário " + a.Nome + " agendou uma revisão"
+                });
                 await _context.SaveChangesAsync();
-                _notifyService.Success("Revisão cadastrada com sucesso!");
+                _notifyService.Success("Revisão agendada com sucesso!");
                 return RedirectToAction("IndexUser", "Revisao");
             }
             catch (Exception e)
@@ -137,7 +142,13 @@ namespace A2Topicos3.Controllers
             {
                 try
                 {
+                    var a = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("user"));
                     _context.Update(revisao);
+                    _context.Logs.Add(new Log
+                    {
+                        LogDateTime = DateTime.Now,
+                        Texto = "Usuário " + a.Nome + " com id:" + a.Id + " alterou uma revisão"
+                    });
                     await _context.SaveChangesAsync();
                     _notifyService.Success("Revisão atualizada com sucesso!");
                 }
@@ -191,6 +202,12 @@ namespace A2Topicos3.Controllers
             var revisao = await _context.Revisaos.FindAsync(id);
             if (revisao != null)
             {
+                var a = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("user"));
+                _context.Logs.Add(new Log
+                {
+                    LogDateTime = DateTime.Now,
+                    Texto = "Usuário " + a.Nome + " com id: " + a.Id + " deletou uma revisão"
+                });
                 _context.Revisaos.Remove(revisao);
             }
             

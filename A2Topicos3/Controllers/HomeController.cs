@@ -22,7 +22,6 @@ namespace A2Topicos3.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.username = HttpContext.Session.GetString("nome_user");
             return View();
         }
 
@@ -43,6 +42,12 @@ namespace A2Topicos3.Controllers
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                 }));
+                db.Logs.Add(new Log
+                {
+                    LogDateTime = DateTime.Now,
+                    Texto = "Login do usuário " + user.Nome + " com id:" + user.Id
+                }) ;
+                db.SaveChanges();
                 _notifyService.Success("Login realizado com sucesso!");
                 return RedirectToAction("Index", "Home");
             }
@@ -54,8 +59,17 @@ namespace A2Topicos3.Controllers
         }
         public IActionResult Logout()
         {
+            var str = HttpContext.Session.GetString("user");
+            var usu = JsonConvert.DeserializeObject<Usuario>(str);
             HttpContext.Session.Remove("user");
-            return RedirectToAction("Index", "Home");
+            db.Logs.Add(new Log
+            {
+                LogDateTime = DateTime.Now,
+                Texto = "Logout do usuário " + usu.Nome + " com id:" + usu.Id
+            });
+            db.SaveChanges();
+            _notifyService.Success("Logout realizado");
+            return RedirectToAction("Login", "Home");
         }
 
         public IActionResult Privacy()

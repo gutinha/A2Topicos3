@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using A2Topicos3.Models;
 using AspNetCoreHero.ToastNotification.Abstractions;
 using AspNetCoreHero.ToastNotification.Notyf;
+using Newtonsoft.Json;
 
 namespace A2Topicos3.Controllers
 {
@@ -59,7 +60,9 @@ namespace A2Topicos3.Controllers
         {
             if (ModelState.IsValid)
             {
+                var a = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("user"));
                 _context.Add(marca);
+                _context.Logs.Add(new Log { LogDateTime = DateTime.Now, Texto = "Usuário " + a.Nome + " com id: " + a.Id + " criou a marca: " + marca.Nome });
                 await _context.SaveChangesAsync();
                 _notifyService.Success("Marca cadastrada com sucesso!");
                 return RedirectToAction("Index","Home");
@@ -100,7 +103,9 @@ namespace A2Topicos3.Controllers
             {
                 try
                 {
+                    var a = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("user"));
                     _context.Update(marca);
+                    _context.Logs.Add(new Log { LogDateTime = DateTime.Now, Texto = "Usuário " + a.Nome + " com id: " +a.Id+" editou a marca: " + marca.Nome });
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -149,6 +154,11 @@ namespace A2Topicos3.Controllers
             var marca = await _context.Marcas.FindAsync(id);
             if (marca != null)
             {
+                var a = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("user"));
+                _context.Logs.Add(new Log
+                {
+                    LogDateTime = DateTime.Now,
+                    Texto = "Usuário "   + a.Nome + " com id: " + a.Id + " deletou a marca: " + marca.Nome });
                 _context.Marcas.Remove(marca);
             }
             

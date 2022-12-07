@@ -60,7 +60,7 @@ namespace A2Topicos3.Controllers
             if (ModelState.IsValid)
             {
                 var valid = _context.Usuarios.Where(x => x.Email == usuario.Email).FirstOrDefault();
-                if (valid.Id != 0 || valid.Id != null)
+                if (valid != null)
                 {
                         _notifyService.Warning("Email já cadastrado");
                         return RedirectToAction("Login", "Home");
@@ -80,6 +80,7 @@ namespace A2Topicos3.Controllers
                     {
                         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                     }));
+                    _notifyService.Success("Cadastro realizado com sucesso!");
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -99,6 +100,7 @@ namespace A2Topicos3.Controllers
             if (ModelState.IsValid)
             {
                 var valid = _context.Usuarios.Where(x => x.Email == usuario.Email).FirstOrDefault();
+                var a = JsonConvert.DeserializeObject<Usuario>(HttpContext.Session.GetString("user"));
                 if (valid.Id != 0 || valid.Id != null)
                 {
                     if(valid.Ativo == false)
@@ -110,6 +112,7 @@ namespace A2Topicos3.Controllers
                     new Permisso() { IdUsuario = usuario.Id, Permissao = "Admin" }
                     };
                     _context.Add(valid).State = EntityState.Modified;
+                    _context.Logs.Add(new Log() { LogDateTime = DateTime.Now, Texto = "Usuário " + a.Nome + " Criou um administrador com o id:" + valid.Id });
                     await _context.SaveChangesAsync();
                     _notifyService.Success("Usuário criado com sucesso");
                     return RedirectToAction("Index", "Home");
@@ -134,6 +137,21 @@ namespace A2Topicos3.Controllers
 
         // GET: Usuario/Edit/5
         public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Usuarios == null)
+            {
+                return NotFound();
+            }
+
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            return View(usuario);
+        }
+        // GET: Usuario/EditPerm/5
+        public async Task<IActionResult> EditPerm(int? id)
         {
             if (id == null || _context.Usuarios == null)
             {
